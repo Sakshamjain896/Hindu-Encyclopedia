@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1773687662532,
+    "name": "Saksham Jain",
+    "email": "jain.saksham896@gmail.com",
+    "password": "S@ksham896",
+    "avatar": "https://ui-avatars.com/api/?name=Saksham%20Jain&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 1100,
+    "premium": true
+  },
+  {
+    "id": 1774620549201,
+    "name": "test",
+    "email": "test@test.com",
+    "password": "password",
+    "avatar": "https://ui-avatars.com/api/?name=test&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 0,
+    "premium": false
+  },
+  {
+    "id": 1775330286286,
+    "name": "MG",
+    "email": "mg@mg.com",
+    "password": "Mitarpal@10",
+    "avatar": "https://ui-avatars.com/api/?name=MG&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 0,
+    "premium": false
+  },
+  {
+    "id": 1775331668332,
+    "name": "asdf",
+    "email": "asdf@asdf.asdf",
+    "password": "asdfasdf",
+    "avatar": "https://ui-avatars.com/api/?name=asdf&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 0,
+    "premium": false
+  },
+  {
+    "id": 1775373548988,
+    "name": "Aayush",
+    "email": "ayush@gmail.com",
+    "password": "123456",
+    "avatar": "https://ui-avatars.com/api/?name=Aayush&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 500,
+    "premium": true
+  },
+  {
+    "id": 1775375018038,
+    "name": "xyz",
+    "email": "xyz@gmail.com",
+    "password": "xyz123",
+    "avatar": "https://ui-avatars.com/api/?name=xyz&background=random&color=fff",
+    "rank": "Novice",
+    "karma": 0,
+    "tokens": 500,
+    "premium": true
+  }
+]

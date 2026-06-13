@@ -1,0 +1,3518 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-heading: 'Cinzel Decorative', serif;
+  --font-body: 'Oswald', sans-serif;
+  --bg-deep: #0a0202;
+  --bg-panel: rgba(30, 10, 10, 0.85);
+  --card-bg: rgba(45, 15, 15, 0.7);
+  --gold: #ef4444;
+  --gold-light: #fca5a5;
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --accent-red: #b91c1c;
+  --accent-green: #10b981;
+  --border-glow: rgba(239, 68, 68, 0.5);
+  --input-bg: rgba(40, 15, 15, 0.6);
+  --panel-bg: rgba(20, 5, 5, 0.98);
+  --quiz-bg: rgba(0, 0, 0, 0.4);
+  --quiz-opt-bg: rgba(255, 0, 0, 0.05);
+  --quiz-opt-hover: rgba(255, 0, 0, 0.15);
+  --mantra-bg: rgba(0, 0, 0, 0.5);
+  --close-btn-bg: rgba(40, 15, 15, 0.8);
+  --btn-bg: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%);
+  --btn-text: #ffffff;
+}
+
+body.light-theme {
+  --bg-deep: #0f172a;
+  --bg-panel: rgba(15, 23, 42, 0.75);
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --gold: #fbbf24;
+  --gold-light: #fef08a;
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border-glow: rgba(251, 191, 36, 0.6);
+  --input-bg: rgba(30, 41, 59, 0.8);
+  --panel-bg: rgba(15, 23, 42, 0.95);
+  --quiz-bg: rgba(251, 191, 36, 0.05);
+  --quiz-opt-bg: rgba(251, 191, 36, 0.1);
+  --quiz-opt-hover: rgba(251, 191, 36, 0.2);
+  --mantra-bg: rgba(0, 0, 0, 0.4);
+  --close-btn-bg: rgba(251, 191, 36, 0.2);
+  --btn-bg: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  --btn-text: #0f172a;
+}
+
+html,
+body,
+body.light-theme {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-body);
+  min-height: 100vh;
+  color: var(--text-main);
+  background: black; /* Standard fallback */
+  margin: 0;
+  padding: 0;
+  transition: color 0.6s ease;
+}
+
+body.kali-theme-active, 
+body.kali-yuga,
+body.kali-mode {
+  background: transparent !important;
+}
+
+/* =========================================
+   CUSTOM SCROLLBARS FOR THEMES (HIDDEN)
+========================================= */
+:root {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================
+   CUSTOM PHYSICS CURSOR
+========================================= */
+
+/* Ensure default background (Asura) is black when needed, via .app-shell or asura-bg */
+/* When Kali or ThreeBackground is active, body is transparent */
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: transparent !important;
+}
+
+/* Ensure the background layer doesn''t have its own opaque color */
+.background-layer {
+  background: transparent !important;
+}
+
+.heaven-bg,
+.heaven-rays,
+.asura-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -2; /* Move further back */
+  transition: opacity 0.8s ease;
+}
+
+.heaven-bg {
+  background: linear-gradient(90deg, #58d2e6, #90ee90, #ccff66, #58d2e6);
+  background-size: 300% 100%;
+  opacity: 1; /* Was 0, hiding the gradient without the body fallback */
+  animation: godGradientFlow 15s ease infinite;
+}
+
+@keyframes godGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Base App structure */
+.heaven-rays {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% -20%, rgba(255, 215, 0, 0.3) 0%, transparent 80%);
+  z-index: -1;
+  mix-blend-mode: overlay;
+  opacity: 0;
+}
+
+.asura-bg {
+  background: radial-gradient(circle at top, rgba(63, 0, 0, 0.9) 0%, rgba(10, 2, 2, 0.95) 80%, rgba(0, 0, 0, 1) 100%);
+  opacity: 1;
+}
+
+body.kali-theme-active .asura-bg {
+  opacity: 0 !important;
+}
+
+.lightning-strike {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(circle at 20% 0%, #ffffff 0%, #ef4444 20%, transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+body.light-theme .heaven-bg {
+  opacity: 1;
+}
+
+body.light-theme .heaven-rays {
+  opacity: 1;
+  animation: divineBreathe 8s infinite alternate ease-in-out;
+}
+
+body.light-theme .asura-bg,
+body.light-theme .lightning-strike {
+  opacity: 0;
+}
+
+body:not(.light-theme) .heaven-bg,
+body:not(.light-theme) .heaven-rays {
+  opacity: 0;
+}
+
+body:not(.light-theme) .lightning-strike {
+  animation: flashLightning 6s infinite;
+  opacity: 1;
+}
+
+@keyframes divineBreathe {
+  0% {
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.08) translateY(10px);
+    filter: brightness(1.3) contrast(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmerRays {
+  0% {
+    opacity: 0.6;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes stormPan {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.05) translate(10px, 10px);
+  }
+}
+
+@keyframes flashLightning {
+  0%,
+  85%,
+  88%,
+  91%,
+  93%,
+  100% {
+    opacity: 0;
+  }
+  86%, 87% {
+    opacity: 0.6;
+    background: radial-gradient(circle at 35% -10%, rgba(255, 255, 255, 0.8) 0%, rgba(200, 30, 30, 0.4) 20%, transparent 50%);
+  }
+  89%, 90% {
+    opacity: 0.2;
+    background: radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.4) 0%, transparent 40%);
+  }
+  92% {
+    opacity: 0.7;
+    background: radial-gradient(circle at 65% -15%, rgba(255, 255, 255, 0.9) 0%, rgba(200, 30, 30, 0.5) 25%, transparent 60%);
+  }
+}
+
+.top-controls {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 24px 0 24px;
+  gap: 16px;
+  z-index: 100;
+  flex-wrap: wrap;
+}
+
+.top-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.1em;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px var(--border-glow);
+  transition: all 0.3s ease;
+}
+
+.top-btn:hover {
+  background: var(--gold);
+  color: var(--btn-text);
+  transform: translateY(-2px);
+}
+
+/* User Profile Styles */
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background: var(--bg-panel);
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1px solid var(--gold);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.profile-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 280px;
+  /* Hallowed Temple Stone Look */
+  background: 
+    linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(200,180,140,0.1) 100%),
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(218, 165, 32, 0.05) 10px, rgba(218, 165, 32, 0.05) 12px), /* Subtle Gold Veins */
+    #fdfbf7; /* Polished Marble Base */
+  background-blend-mode: overlay, normal;
+  border: 4px solid #b8964d; /* Burnished Gold Frame */
+  outline: 2px solid #8c6b2e; /* Shadow/Inset detail */
+  outline-offset: -8px; /* Inner inset */
+  border-radius: 4px; /* Slightly rounded stone */
+  padding: 24px;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6), /* Heavy ancient shadow */
+    inset 0 0 40px rgba(184, 150, 77, 0.15), /* Inner glow */
+    0 0 0 1px rgba(0,0,0,0.5); /* Crisp outline */
+  z-index: 1001;
+  animation: slideDownFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: top right;
+  font-family: var(--font-heading); /* Ancient Font Priority */
+}
+
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.profile-header {
+  border-bottom: 2px solid rgba(184, 150, 77, 0.2);
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  position: relative;
+}
+/* Decorative under-line flourish */
+.profile-header::after {
+  content: '❖';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #b8964d;
+  background: #fdfbf7;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.profile-header h4 {
+  margin: 0;
+  color: #8c6b2e; /* Deep Burnished Gold */
+  font-family: var(--font-heading); 
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: none;
+  -webkit-text-fill-color: initial;
+  filter: none;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.8), 0 0 1px rgba(0,0,0,0.1); /* Engraved effect */
+}
+
+.profile-header p {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #a68a56; /* Desaturated Gold */
+  font-style: italic;
+  font-family: var(--font-body); 
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  border-top: 1px solid rgba(184, 150, 77, 0.15);
+  border-bottom: 1px solid rgba(184, 150, 77, 0.15);
+  padding: 15px 0;
+  background: rgba(184, 150, 77, 0.03); /* Faint highlight */
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 1.3em;
+  font-weight: bold;
+  font-family: var(--font-heading);
+  color: #8c6b2e; /* Deep Gold */
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.stat-label {
+  font-size: 0.7em;
+  color: #b8964d;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+  }
+  
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 50, 50, 0.05); /* Very faint red tint */
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  color: #ffcccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 50, 50, 0.2);
+  border-color: #ff5555;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+/* Comparison Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: top;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Specific styling for comparison result area */
+#compare-result table {
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+#compare-result th:first-child,
+#compare-result td:first-child {
+  font-weight: bold;
+  color: var(--gold-light);
+  width: 20%;
+}
+
+#compare-result th:not(:first-child) {
+  width: 40%;
+}
+
+#compare-result ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+#compare-result ul li {
+  margin-bottom: 4px;
+}
+
+.logout-btn:hover {
+  background: var(--accent-red);
+  color: #fff;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 12px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 0 30px;
+  padding: 0 20px;
+  color: var(--gold-light);
+  font-family: var(--font-heading);
+  font-size: 3.5em;
+  letter-spacing: 3px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  transition: color 0.5s ease;
+  clear: both;
+}
+
+body.light-theme h1 {
+    color: #FFD700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 248, 220, 0.4);
+}
+
+.container-box {
+  max-width: 650px;
+  margin: 32px auto;
+  padding: 32px;
+  background: var(--bg-panel);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+}
+
+body.light-theme .container-box {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.container-box h3 {
+  font-family: var(--font-heading);
+  color: var(--gold-light);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.8em;
+  letter-spacing: 1px;
+}
+
+button:not(.top-btn):not(.side-panel-close):not(.auth-ghost) {
+  padding: 14px 32px;
+  border-radius: 10px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.2em;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--border-glow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:not(.top-btn):not(.side-panel-close):not(.auth-ghost):hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px var(--border-glow);
+}
+
+body.light-theme button:not(.top-btn):not(.side-panel-close):not(.auth-ghost) {
+  box-shadow: 0 2px 8px rgba(255, 213, 79, 0.5);
+}
+
+button:disabled {
+  background: rgba(128, 128, 128, 0.3);
+  color: #888;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  margin: 50px auto;
+  max-width: 1200px;
+  padding: 0 24px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.19s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.17s, border 0.18s,
+    background 0.5s ease;
+}
+
+body.light-theme .card {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    background: rgba(30, 41, 59, 0.5); /* Deep slate cosmic glass */
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+  }
+  
+  .card:hover,
+  .card.active {
+    transform: translateY(-10px) scale(1.045);
+    border-color: var(--gold);
+    box-shadow: 0 15px 40px var(--border-glow);
+  }
+
+  body.light-theme .card:hover,
+  body.light-theme .card.active {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(251, 191, 36, 0.8);
+    box-shadow: 0 15px 40px rgba(251, 191, 36, 0.2), inset 0 0 15px rgba(251, 191, 36, 0.1);
+  }
+
+.compare-checkbox {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  transform: scale(1.3);
+  accent-color: var(--gold);
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 4px;
+  border: 1px solid #94a3b8;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+}
+.compare-checkbox:checked {
+  background-color: var(--gold);
+  border-color: var(--gold);
+}
+
+.card img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--gold-light);
+  background-clip: padding-box;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.5s ease;
+}
+
+body.light-theme .card img {
+  border: 3px solid #fbbf24;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-size: 1.5em;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+body.light-theme .name {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+.title {
+  font-size: 0.9em;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+body.light-theme .title {
+  color: #fef08a; /* Pale gold */
+  text-shadow: 0 0 5px rgba(254, 240, 138, 0.4);
+}
+
+.desc {
+  font-size: 1.1em;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+body.light-theme .desc {
+  color: #cbd5e1;
+}
+
+.compare-bar {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+#compare-result {
+  max-width: 900px;
+  margin: 20px auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  padding: 40px;
+  border-radius: 20px;
+  line-height: 1.8;
+  color: var(--text-main);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  text-align: left;
+  display: none;
+}
+
+.show {
+  display: block !important;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #475569;
+  background: var(--input-bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  transition: border-color 0.2s, background 0.5s, color 0.5s;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 10px;
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  color: var(--gold-light);
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+td {
+  padding: 16px;
+  background: var(--quiz-opt-bg);
+}
+
+td:first-child {
+  border-radius: 10px 0 0 10px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+td:last-child {
+  border-radius: 0 10px 10px 0;
+  color: var(--text-muted);
+}
+
+tr:hover td {
+  background: var(--quiz-opt-hover);
+}
+
+.side-panel {
+  position: fixed;
+  top: 0;
+  right: -500px;
+  width: 450px;
+  max-width: 100%;
+  height: 100vh;
+  background: var(--panel-bg);
+  border-left: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+    -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px);
+}
+
+.side-panel.open {
+  right: 0;
+}
+
+.side-panel-header {
+  padding: 0;
+  position: relative;
+  text-align: center;
+}
+
+.side-panel-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: center 15%;
+  border-radius: 0;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+}
+
+.side-panel-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  font-size: 2em;
+  color: var(--text-main);
+  background: var(--close-btn-bg);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  z-index: 10;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.side-panel-close:hover {
+  background: var(--accent-red);
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.1);
+}
+
+.side-panel-title {
+  font-family: var(--font-heading);
+  font-size: 2.4em;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.side-panel-subtitle {
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.side-panel-details {
+  padding: 0 32px 40px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  font-size: 1.25em;
+}
+
+.mantra-box {
+  margin-top: 20px;
+  padding: 24px;
+  background: var(--mantra-bg);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.05);
+}
+
+.mantra-sanskrit {
+  font-family: 'Tiro Devanagari Sanskrit', serif;
+  font-size: 1.8em;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+
+.mantra-english {
+  font-size: 1.15em;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.play-mantra-btn {
+  background: rgba(128, 128, 128, 0.2) !important;
+  border: 1px solid var(--gold) !important;
+  color: var(--gold) !important;
+  padding: 8px 20px !important;
+  border-radius: 30px !important;
+  font-size: 0.9em !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+body.light-theme .play-mantra-btn {
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.play-mantra-btn:hover {
+  background: var(--gold) !important;
+  color: var(--btn-text) !important;
+  box-shadow: 0 0 15px var(--border-glow) !important;
+  transform: scale(1.05) !important;
+}
+
+.play-icon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.ai-fact {
+  margin-top: 24px;
+  padding: 24px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 12px 12px 0;
+  color: var(--text-main);
+  display: none;
+  font-size: 1.15em;
+}
+
+body.light-theme .ai-fact {
+  background: #fffde7;
+  border-left: 4px solid var(--gold);
+  color: #333333; /* Dark text for contrast against the light background */
+}
+
+.quiz-question {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--quiz-bg);
+  border-radius: 12px;
+}
+
+.quiz-question b {
+  color: var(--gold-light);
+  font-size: 1.1em;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.quiz-option {
+  display: block;
+  margin: 12px 0;
+  padding: 16px;
+  background: var(--quiz-opt-bg);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  font-size: 1.15em;
+}
+
+.quiz-option:hover {
+  background: var(--quiz-opt-hover);
+}
+
+.quiz-option input {
+  margin-right: 14px;
+  transform: scale(1.4);
+  accent-color: var(--gold);
+}
+
+.quiz-option.correct-ans {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.quiz-option.wrong-ans {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  opacity: 0.8;
+}
+
+.quiz-option.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+#authModalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#authModalWrapper.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.auth-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 90%;
+  height: 480px;
+  margin: auto; /* Fallback for absolute centering if flex fails */
+}
+
+.auth-container .form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.auth-container form {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+.auth-container h2 {
+  font-family: var(--font-heading);
+  margin-bottom: 10px;
+  font-size: 2.2em;
+}
+
+.social-container {
+  margin: 20px 0;
+  display: flex;
+  gap: 15px;
+}
+
+.social-container a {
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 45px;
+  width: 45px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.social-container a:hover {
+  transform: scale(1.1);
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.sign-in-container form {
+  background: #fffbe7;
+  color: #2c5364;
+}
+
+.sign-in-container h2 {
+  color: #c7760a;
+}
+
+.sign-in-container input {
+  background-color: #f1f2f6;
+  border: 1px solid transparent;
+  color: #334155;
+  margin: 10px 0;
+  border-radius: 8px;
+  padding: 14px 18px;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.sign-in-container button {
+  background: #fcd34d; /* Golden/Yellow based on screenshot */
+  color: #1e293b;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 12px 40px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(252, 211, 77, 0.4);
+}
+
+.sign-in-container button:hover {
+  background: #fbbf24;
+  color: #0f172a;
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.sign-up-container form {
+  background: #1a0505;
+  color: #f8fafc;
+}
+
+.sign-up-container h2 {
+  color: #ef4444;
+}
+
+.sign-up-container input {
+  background-color: #2b0c0c;
+  border: 1px solid transparent;
+  color: #fecaca;
+  margin: 10px 0;
+  border-radius: 8px;
+  padding: 14px 18px;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.sign-up-container button {
+  background: #b91c1c; /* Kept red based on screenshot */
+  color: #fff;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 12px 40px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(185, 28, 28, 0.4);
+}
+
+.sign-up-container button:hover {
+  background: #991b1b;
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.overlay {
+  background: transparent;
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+  background: #f1f2f6; /* Off-White to match screenshot form side? No, screenshot shows red overlay */
+  background: #dc2626; /* Solid red for Seek Light overlay */
+}
+
+.overlay-left h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2em;
+  color: #ffd54f;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.overlay-left p {
+  font-size: 1.25em;
+  line-height: 1.6;
+  margin: 20px 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.overlay-left button.auth-ghost {
+  background: transparent;
+  border: 2px solid #ffd54f;
+  color: #ffd54f;
+  padding: 10px 25px;
+  font-weight: bold;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.overlay-left button.auth-ghost:hover {
+  background: #ffd54f;
+  color: #7f1d1d;
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+  background: #4a1515; /* Deep rich dark brown/red derived exactly from the right panel of the new image */
+}
+
+.overlay-right h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2em;
+  color: #ef4444; /* Bright Red */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.overlay-right p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin: 20px 0;
+  color: #ffffff;
+}
+
+.overlay-right button.auth-ghost {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 10px 30px;
+  font-weight: 600;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.overlay-right button.auth-ghost:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.auth-container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+}
+
+.auth-container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+}
+
+.auth-container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.auth-container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.auth-container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.auth-container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+@keyframes showAuth {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.close-auth-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2em;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1000;
+  text-shadow: 0 2px 5px #000;
+}
+
+.mobile-auth-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    min-height: 600px;
+    max-width: 95%;
+  }
+
+  .sign-in-container,
+  .sign-up-container {
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .sign-up-container {
+    transform: translateX(0);
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .auth-container.right-panel-active .sign-up-container {
+    transform: translateX(0);
+    left: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .auth-container.right-panel-active .sign-in-container {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(0);
+  }
+
+  .overlay-container {
+    display: none;
+  }
+
+  .mobile-auth-toggle {
+    display: block !important;
+    margin-top: 20px;
+    background: none !important;
+    border: none !important;
+    color: inherit !important;
+    text-decoration: underline;
+    font-size: 0.9em;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .side-panel {
+    width: 100vw;
+  }
+
+  .top-controls {
+    padding: 10px 10px 0 10px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .top-btn {
+    padding: 8px 12px;
+    font-size: 0.9em;
+  }
+}
+
+.three-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -3;
+}
+
+/* --- KALI YUGA (Cyberpunk Mode) Overrides --- */
+.kali-mode {
+  --bg-deep: #050510;
+  --bg-panel: rgba(10, 10, 20, 0.9);
+  --card-bg: rgba(0, 255, 255, 0.05);
+  --gold: #00ffcc; /* Cyan Neon */
+  --gold-light: #ff00ff; /* Magenta Neon */
+  --text-main: #e0f2fe;
+  --text-muted: #94a3b8;
+  --border-glow: #00ffcc;
+  font-family: var(--font-heading); /* Futuristic Font */
+  letter-spacing: 1px;
+}
+
+.kali-mode h1, .kali-mode h2, .kali-mode h3 {
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold-light);
+}
+
+.kali-mode .top-btn {
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+}
+
+.kali-mode .top-btn:hover {
+  background: var(--gold-light);
+  color: #000;
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.8);
+}
+
+.kali-mode .container-box {
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+  background: rgba(5, 5, 10, 0.8);
+}
+
+.kali-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Payment Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+    -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.payment-modal {
+  background: #1a1a1a;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: none; border: none;
+  font-size: 1.5rem; color: #fff;
+  cursor: pointer;
+}
+
+.token-balance {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 10px 0 20px;
+  color: var(--gold);
+}
+
+.payment-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.payment-tabs button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #888;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.payment-tabs button.active {
+  color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+}
+
+.amount-selector label {
+  display: block;
+  background: #2a2a2a;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount-selector label.selected {
+  border-color: var(--gold);
+  background: rgba(0, 255, 204, 0.1);
+}
+
+.amount-selector input[type="radio"] {
+  margin-right: 10px;
+}
+
+.pay-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--btn-bg);
+  border: none;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pay-btn:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 15px rgba(255, 213, 79, 0.5);
+}
+
+.payment-details input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #333;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* --- KALI YUGA THEME (Concrete, Ash, & Rust) --- */
+.kali-mode {
+  --bg-deep: #1a1a1a;        /* Smog Black */
+  --bg-panel: #2d2d2d;       /* Asphalt */
+  --card-bg: #252525;        /* Concrete */
+  --text-main: #d3d3d3;      /* Light Ash */
+  --text-secondary: #888888; /* Dull Grey */
+  --border-glow: #8b4513;    /* Rusted Iron */
+  --gold: #c5a059;           /* Dying Gold */
+  --gold-light: #e6cca0;     /* Faded Gold */
+  --btn-bg: #3e3e3e;         /* Dark Concrete */
+  --btn-text: #d3d3d3;
+}
+
+body.kali-mode {
+  background: #111;
+  font-family: var(--font-body); /* Distressed/Typewriter */
+  color: var(--text-main);
+}
+
+body.kali-mode h1, 
+body.kali-mode h2, 
+body.kali-mode h3 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0px #000; /* Hard shadow, no blur */
+}
+
+/* Brutalist Card Style */
+body.kali-mode .card {
+  background: var(--card-bg);
+  border: 4px solid #333; /* Heavy industrial border */
+  border-radius: 0px;     /* No curves */
+  box-shadow: 6px 6px 0px #000; /* Hard shadow */
+  transition: all 0.2s ease;
+}
+
+body.kali-mode .card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px #000;
+  border-color: var(--border-glow); /* Rust border on hover */
+  background: #2a2a2a;
+}
+
+body.kali-mode .card img {
+  filter: grayscale(90%) sepia(20%) contrast(1.2); /* Weathered Photo Look */
+  border: 2px solid #111;
+  border-radius: 0;
+}
+
+body.kali-mode .card:hover img {
+  filter: grayscale(0%) contrast(1.1); /* Color returns slightly on hover */
+  border-color: var(--gold);
+}
+
+/* Distressed Buttons */
+body.kali-mode button {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 2px solid #555;
+  border-radius: 0px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 3px 3px 0px #000;
+  font-weight: bold;
+}
+
+body.kali-mode button:hover {
+  background: #444;
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 5px 5px 0px #000;
+}
+
+/* Panel & Containers */
+body.kali-mode .side-panel,
+body.kali-mode .profile-dropdown,
+body.kali-mode .container-box {
+  background: var(--bg-panel);
+  border: 3px solid #444;
+  border-radius: 0px;
+  box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+}
+
+body.kali-mode .side-panel {
+  border-left: 5px solid var(--border-glow);
+}
+
+body.kali-mode input {
+  background: #1a1a1a;
+  border: 2px solid #555;
+  color: var(--text-main);
+  border-radius: 0;
+  font-family: inherit;
+}
+
+body.kali-mode input:focus {
+  border-color: var(--gold);
+  outline: none;
+  background: #222;
+}
+
+
+/* Payment Modal - Bunker Style */
+body.kali-mode .payment-modal {
+  background: #1a1a1a;
+  border: 4px solid var(--border-glow);
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,0.8); /* Dim background heavily */
+  border-radius: 0;
+}
+
+body.kali-mode .payment-modal h2 {
+  color: var(--gold);
+  border-bottom: 2px solid var(--text-secondary);
+  padding-bottom: 10px;
+}
+
+body.kali-mode .payment-tabs button.active {
+  background: var(--gold);
+  color: #000;
+  border: 2px solid var(--gold);
+  box-shadow: none;
+}
+
+
+/* --- KALKI AVATAR THEME (The Celestial Comet) --- */
+.kalki-mode {
+  --bg-deep: #000000;        /* Deep Cosmos */
+  --bg-panel: rgba(5, 5, 5, 0.95); /* Deep Sapphire Glass - High Opacity for Readability */
+  --card-bg: rgba(0, 20, 50, 0.85); /* Darker Sapphire - High Contrast */
+  --text-main: #ffffff;      /* Pure Starlight White */
+  --text-secondary: #e0f2fe; /* Bright Cyan-White */
+  --border-glow: #0ea5e9;    /* Electric Cyan */
+  --gold: #38bdf8;           /* Sky Blue (replacing Gold) */
+  --gold-light: #ffffff;     /* Pure White Star */
+  --btn-bg: rgba(14, 165, 233, 0.25);
+  --btn-text: #ffffff;       /* Ensure button text is white */
+}
+
+body.kalki-mode {
+  background: #000000; /* Void of Space */
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+body.kalki-mode p, 
+body.kalki-mode span, 
+body.kalki-mode li {
+  color: var(--text-secondary); /* Ensure all body text uses the bright secondary color */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); /* Drop shadow for readability against stars */
+}
+
+body.kalki-mode h1, 
+body.kalki-mode h2, 
+body.kalki-mode h3 {
+  color: var(--gold-light); /* Pure White Headers */
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.8), 0 2px 4px rgba(0,0,0,0.9); /* Comet Glow + Shadow */
+}
+
+/* Sapphire Crystal Card Style */
+body.kalki-mode .card {
+  background: var(--card-bg); /* Use the new higher opacity background */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px); /* Increased blur */
+  border: 1px solid rgba(14, 165, 233, 0.6); /* Sharper border */
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5), 0 0 15px rgba(14, 165, 233, 0.1);
+  /* Ensure text alignment */
+  text-align: center;
+}
+
+body.kalki-mode .card .desc,
+body.kalki-mode .card p {
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9); /* Strong text shadow for body text */
+}
+
+body.kalki-mode .card:hover {
+  background: rgba(14, 165, 233, 0.25); /* More visible on hover */
+  border-color: #ffffff; /* White border on hover */
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(14, 165, 233, 0.5);
+}
+
+body.kalki-mode .card .name,
+body.kalki-mode .card h3 {
+  color: var(--gold-light); /* Pure White */
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.8), 0 2px 4px rgba(0,0,0,1);
+}
+
+body.kalki-mode .card .title {
+  color: #38bdf8; /* Electric Cyan */
+  text-shadow: 0 0 5px rgba(14, 165, 233, 0.6);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+body.kalki-mode .card:hover .name,
+body.kalki-mode .card:hover h3 {
+  color: #00ffff; 
+  text-shadow: 0 0 10px #00ffff, 0 2px 4px black;
+}
+
+body.kalki-mode .card img {
+  border: 1px solid rgba(14, 165, 233, 0.6);
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+  filter: brightness(1.1) contrast(1.2) saturate(1.1); /* Cosmic vibrancy */
+}
+
+/* Starlight Buttons */
+body.kalki-mode button {
+  background: linear-gradient(90deg, rgba(5, 5, 5, 0.95) 0%, rgba(14, 165, 233, 0.4) 100%); /* Stronger gradient */
+  color: #ffffff; /* Pure White text for max contrast */
+  text-shadow: 0 1px 2px black;
+  border: 1px solid #0ea5e9;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+  transition: all 0.3s;
+}
+
+body.kalki-mode button:hover {
+  background: #0ea5e9; /* Solid Cyan on hover */
+  color: #ffffff;
+  box-shadow: 0 0 20px #0ea5e9;
+  border-color: #ffffff;
+  text-shadow: none;
+}
+
+/* Translucent Sapphire Panels */
+body.kalki-mode .side-panel,
+body.kalki-mode .profile-dropdown,
+body.kalki-mode .container-box {
+  background: var(--bg-panel);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  box-shadow: 0 0 30px rgba(2, 6, 23, 0.8), inset 0 0 20px rgba(14, 165, 233, 0.05);
+  border-radius: 4px;
+}
+
+body.kalki-mode .side-panel {
+  border-left: 3px solid #00ffff;
+}
+
+/* Inputs */
+body.kalki-mode input {
+  background: rgba(5, 5, 5, 0.95); /* Deep background for input */
+  border: 1px solid var(--border-glow);
+  color: #ffffff; /* White text */
+  padding: 10px;
+  font-weight: 500;
+}
+
+body.kalki-mode input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body.kalki-mode input:focus {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(14, 165, 233, 0.4);
+  outline: none;
+}
+
+/* Payment Modal - Deep Space Vault */
+body.kalki-mode .payment-modal {
+  background: rgba(2, 6, 23, 0.95);
+  border: 2px solid #0ea5e9;
+  box-shadow: 0 0 50px rgba(14, 165, 233, 0.3);
+  color: white;
+}
+
+body.kalki-mode .payment-modal h2 {
+  color: #00ffff;
+  border-bottom: 2px solid #0ea5e9;
+  text-shadow: 0 0 10px #0ea5e9;
+}
+
+body.kalki-mode .payment-tabs button.active {
+  background: #0ea5e9;
+  color: white;
+  box-shadow: 0 0 20px #0ea5e9;
+}
+
+
+/* Vaikunth (Heavenly) Background Style */
+.vaikunth-gradient {
+  position: absolute; /* Ensures it layers behind content */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  background: linear-gradient(180deg, 
+      #002244 0%,   /* Deep Space Blue (Vishnu's Skin Tone) */
+      #005577 40%,  /* Ocean Blue (Milky Ocean) */
+      #ffd700 85%,  /* Golden Light (Divine Aura) */
+      #ffffff 100%  /* Pure White Horizon */
+  );
+  pointer-events: none;
+}
+
+
+/* Vaikunth Gradient - CSS Layer */
+
+.vaikunth-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 20%, #e0f2fe 0%, #7dd3fc 40%, #0c4a6e 100%);
+  opacity: 0.8;
+  mix-blend-mode: saturation;
+}
+
+body.light-theme {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+
+/* Vaikunth Gradient - CSS Layer */
+
+.vaikunth-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 20%, #e0f2fe 0%, #7dd3fc 40%, #0c4a6e 100%);
+  opacity: 0.8;
+  mix-blend-mode: saturation;
+}
+
+body.light-theme {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+
+/* Ensure app-shell doesn't block Three.js */
+.app-shell {
+  background: transparent !important;
+}
+
+
+/* Force fallback background for when ThreeBackground is not present (Asura Mode) */
+body:not(.light-theme):not(.kali-mode) {
+  background: #000;
+}
+
+
+/* FINAL OVERRIDE: Clear background on body for light theme so Three.js shows */
+body.light-theme {
+  background: transparent !important;
+}
+
+
+/* --- NEW FEATURES GRID --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dharma Compass Styles */
+.dharma-compass button.glowing-btn {
+    background: var(--gold);
+    color: var(--bg-deep);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    box-shadow: 0 0 20px var(--border-glow);
+    animation: pulse 2s infinite;
+}
+
+.options-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.option-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid var(--border-glow);
+    padding: 15px;
+    color: var(--text-main);
+    text-align: left;
+    transition: all 0.3s;
+}
+
+.option-btn:hover {
+    background: var(--border-glow);
+    color: var(--bg-deep);
+    transform: translateX(10px);
+}
+
+/* Oracle of Time Styles */
+.oracle-box {
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* Fixed height for chat */
+}
+
+.chat-window {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.chat-msg {
+    margin-bottom: 12px;
+    display: flex;
+}
+
+.chat-msg.user {
+    justify-content: flex-end;
+}
+
+.chat-msg.bot {
+    justify-content: flex-start;
+}
+
+.msg-content {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    line-height: 1.4;
+}
+
+.chat-msg.user .msg-content {
+    background: var(--gold);
+    color: var(--bg-deep);
+    border-bottom-right-radius: 2px;
+}
+
+.chat-msg.bot .msg-content {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-main);
+    border: 1px solid var(--border-glow);
+    border-bottom-left-radius: 2px;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-glow);
+    background: rgba(0,0,0,0.2);
+    color: var(--text-main);
+}
+
+.chat-input-area button {
+    padding: 0 20px;
+    font-size: 1.5em;
+    background: var(--gold);
+    color: var(--bg-deep);
+    border: none;
+    border-radius: 4px;
+}
+
+
+
+/* --- OVERRIDE FOR SINGLE FEATURE --- */
+.features-grid {
+    display: flex !important;
+    justify-content: center !important; 
+    max-width: 800px !important;
+    grid-template-columns: 1fr !important;
+}
+.dharma-compass {
+    width: 100%;
+}
+
+
+
+/* --- DYNAMIC PAYMENT MODAL THEMES --- */
+
+/* Base overrides for layout and spacing */
+.payment-modal {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  padding: 30px !important;
+  max-width: 500px !important;
+}
+
+.amount-grid {
+  display: flex !important;
+  gap: 20px !important;
+  justify-content: space-between !important;
+  margin-bottom: 25px !important;
+}
+
+.amount-grid label {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 15px !important;
+  border: 1px solid rgba(128,128,128,0.3) !important;
+  border-radius: 8px; 
+  cursor: pointer !important;
+  transition: all 0.3s !important;
+  background: transparent;
+  min-height: 80px;
+}
+
+.amount-grid input { display: none; }
+.token-amount { font-size: 1.4em; font-weight: bold; display: block; margin-bottom: 5px; }
+.money-amount { font-size: 1.1em; opacity: 0.8; display: block; }
+
+.payment-header {
+  margin-bottom: 20px;
+}
+
+.payment-header h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.8em;
+  text-align: center;
+  border: none !important;
+  letter-spacing: 2px;
+}
+.token-balance {
+  margin-bottom: 10px !important;
+  text-align: center;
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.payment-tabs {
+  display: flex;
+  margin-bottom: 25px !important;
+  gap: 15px;
+  border-bottom: none !important;
+}
+
+.payment-tabs button {
+  flex: 1;
+  padding: 15px !important;
+  font-size: 1.1em !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease;
+}
+
+.warning-text {
+  font-size: 0.9em;
+  color: #fbbf24;
+  text-align: center;
+  margin-bottom: 15px;
+  background: rgba(251, 191, 36, 0.1);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.payment-details label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95em;
+  opacity: 0.8;
+}
+
+.payment-details input {
+  width: 100%;
+  padding: 14px !important;
+  margin-bottom: 15px;
+  font-size: 1.1em !important;
+}
+
+.success-state, .processing-state {
+  text-align: center;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.checkmark {
+  font-size: 5em;
+  color: #4ade80;
+  margin-bottom: 20px;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.spinner {
+  width: 60px; height: 60px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.spinner.card {
+  border: 5px solid #333;
+  border-top: 5px solid #c5a059;
+}
+.spinner.upi {
+  border: 5px solid rgba(14, 165, 233, 0.2);
+  border-top: 5px solid #00ffff;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pay-btn {
+  padding: 16px !important;
+  font-size: 1.2em !important;
+  margin-top: 10px !important;
+}
+
+/* --- THEME SPECIFIC OVERRIDES --- */
+
+/* KALI THEME (Credit Card) */
+.payment-modal.theme-kali {
+  background: #0a0a0a !important;
+  border: 4px solid #8b4513 !important;
+  box-shadow: 0 0 60px rgba(0,0,0,0.95) !important;
+  border-radius: 2px !important;
+  font-family: var(--font-body);
+}
+
+.payment-modal.theme-kali h2,
+.payment-modal.theme-kali .token-balance {
+  color: #c5a059 !important;
+  text-shadow: 2px 2px 0 #000 !important;
+}
+
+.payment-modal.theme-kali .payment-tabs button.active {
+  background: #c5a059 !important;
+  color: #000 !important;
+  border: 2px solid #c5a059 !important;
+  font-weight: bold;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+}
+
+.payment-modal.theme-kali .amount-grid label.selected {
+  border-color: #c5a059 !important;
+  background: rgba(197, 160, 89, 0.15) !important;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+  transform: translateY(-2px);
+}
+
+.payment-modal.theme-kali input {
+  background: #111 !important;
+  border: 2px solid #444 !important;
+  color: #e5e5e5 !important;
+  border-radius: 0 !important;
+  font-family: inherit;
+}
+.payment-modal.theme-kali input:focus {
+  border-color: #c5a059 !important;
+  background: #000 !important;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+}
+
+.payment-modal.theme-kali .pay-btn {
+  background: #2d2d2d !important;
+  color: #ccc !important;
+  border: 2px solid #555 !important;
+  box-shadow: 5px 5px 0 #000 !important;
+  border-radius: 0 !important;
+  font-family: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.payment-modal.theme-kali .pay-btn:hover {
+  background: #333 !important;
+  border-color: #c5a059 !important;
+  color: #c5a059 !important;
+  box-shadow: 7px 7px 0 #000 !important;
+  transform: translate(-1px, -1px);
+}
+
+
+/* KALKI THEME (UPI) */
+.payment-modal.theme-kalki {
+  background: rgba(2, 6, 30, 0.95) !important;
+  border: 1px solid rgba(14, 165, 233, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 0 80px rgba(14, 165, 233, 0.25), inset 0 0 30px rgba(14, 165, 233, 0.05) !important;
+  font-family: var(--font-body);
+  -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px);
+}
+
+.payment-modal.theme-kalki h2,
+.payment-modal.theme-kalki .token-balance {
+  color: #00ffff !important;
+  text-shadow: 0 0 20px rgba(14, 165, 233, 0.6) !important;
+  letter-spacing: 3px;
+}
+
+.payment-modal.theme-kalki .payment-tabs button.active {
+  background: rgba(14, 165, 233, 0.2) !important;
+  color: #fff !important;
+  border: 1px solid #00ffff !important;
+  box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
+}
+
+.payment-modal.theme-kalki .amount-grid label.selected {
+  border-color: #00ffff !important;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(14, 165, 233, 0.3) 100%) !important;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  transform: scale(1.05);
+}
+
+.payment-modal.theme-kalki input {
+  background: rgba(2, 8, 30, 0.6) !important;
+  border: 1px solid rgba(14, 165, 233, 0.4) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+}
+.payment-modal.theme-kalki input:focus {
+  background: rgba(14, 165, 233, 0.1) !important;
+  border-color: #00ffff !important;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.25) !important;
+}
+
+.payment-modal.theme-kalki .pay-btn {
+  background: linear-gradient(90deg, #0ea5e9 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 5px 20px rgba(14, 165, 233, 0.4) !important;
+  border-radius: 12px !important;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.payment-modal.theme-kalki .pay-btn:hover {
+  background: linear-gradient(90deg, #3b82f6 0%, #0ea5e9 100%) !important;
+  box-shadow: 0 0 40px rgba(14, 165, 233, 0.7) !important;
+  transform: translateY(-2px);
+}
+
+
+/* --- CELESTIAL SHARD Styles --- */
+.celestial-shard {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: white; /* Base crystal color */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Diamond/Shard Shape */
+  position: relative;
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: floatShard 3s ease-in-out infinite;
+  box-shadow: 
+    inset 4px 0 8px rgba(255, 215, 0, 0.6),  /* Gold Aura (Left/Top) */
+    inset -4px 0 8px rgba(220, 38, 38, 0.8), /* Blood Red Aura (Right/Bottom) */
+    0 0 10px rgba(255, 255, 255, 0.5);       /* Outer Glow */
+}
+
+/* Ensure the gradient effect shows on the shard itself */
+.celestial-shard::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,215,0,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(220,38,38,0.5) 100%);
+  z-index: 1;
+}
+
+@keyframes floatShard {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(5deg); }
+}
+
+/* Update fonts for Shard related text */
+.token-amount, .token-balance, .stat-value {
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+}
+
+
+/* --- COSMIC EXCHANGE MODAL --- */
+
+/* Base Overlay */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Modal Transition Base */
+.payment-modal {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden; /* For animations */
+  border-width: 2px;
+  border-style: solid;
+}
+
+/* -- THEME: ASURIC PACT (Heavily distinct from Kali theme) -- */
+.payment-modal.asuric-theme {
+  background: linear-gradient(135deg, #1a0505 0%, #2a0a0a 100%);
+  border-color: #8b0000;
+  box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), inset 0 0 50px rgba(0, 0, 0, 0.8);
+  color: #ffcccc;
+}
+
+.asuric-theme h2 {
+  color: #ff3333;
+  text-shadow: 0 0 10px #ff0000;
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+}
+
+/* Stone Tablet Inputs */
+.asuric-theme .stone-input {
+  background: #2b1111;
+  border: 1px solid #5c1818;
+  color: #fe3232;
+  font-family: var(--font-heading);
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8), 0 1px 0 rgba(255,100,100,0.1);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8); /* Engraved look */
+  padding: 12px;
+  border-radius: 4px;
+}
+.asuric-theme .stone-input::placeholder { color: #883333; opacity: 0.6; }
+
+/* The Pact Button */
+.asuric-theme .action-btn {
+  background: linear-gradient(to bottom, #8b0000, #500000);
+  border: 1px solid #ff3333;
+  color: #ffcccc;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+}
+.asuric-theme .action-btn:hover {
+  background: linear-gradient(to bottom, #aa0000, #700000);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+}
+
+
+/* -- THEME: DIVINE OFFERING (Heavily distinct from Kalki theme) -- */
+.payment-modal.divine-theme {
+  background: linear-gradient(135deg, #f0faff 0%, #e0f7fa 100%);
+  border-color: #00bcd4;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 50px rgba(255, 255, 255, 0.5);
+  color: #006064;
+}
+
+.divine-theme h2 {
+  color: #00acc1;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+}
+
+/* Ray of Light Inputs */
+.divine-theme .divine-input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #4dd0e1;
+  color: #006064;
+  font-family: var(--font-heading);
+  box-shadow: 0 0 15px rgba(77, 208, 225, 0.3);
+  padding: 12px;
+  border-radius: 8px; /* Softer edges */
+}
+.divine-theme .divine-input::placeholder { color: #80deea; }
+
+/* The Offering Button */
+.divine-theme .action-btn {
+  background: linear-gradient(to bottom, #4dd0e1, #00acc1);
+  border: 1px solid #b2ebf2;
+  color: white;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+.divine-theme .action-btn:hover {
+  background: linear-gradient(to bottom, #80deea, #26c6da);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+
+/* -- ANIMATIONS -- */
+/* Intro for Modal Content */
+.payment-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Hell Animation: Drop into fire */
+@keyframes dropToHell {
+  0% { transform: translateY(0); opacity: 1; filter: brightness(1); }
+  40% { transform: translateY(50px); opacity: 1; filter: brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5); } /* Turning red/hot */
+  100% { transform: translateY(200px); opacity: 0; }
+}
+
+/* Heaven Animation: Ascend to light */
+@keyframes ascendToHeaven {
+  0% { transform: translateY(0); opacity: 1; filter: brightness(1); }
+  40% { transform: translateY(-50px); opacity: 0.8; filter: brightness(2) drop-shadow(0 0 10px gold); }
+  100% { transform: translateY(-200px); opacity: 0; }
+}
+
+/* Shard Spawning */
+@keyframes spawnShardHell {
+  0% { transform: translateY(100px) scale(0.1); opacity: 0; }
+  60% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes spawnShardHeaven {
+  0% { transform: translateY(-100px) scale(0.1); opacity: 0; }
+  60% { transform: translateY(20px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.anim-drop-hell { animation: dropToHell 1s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045); }
+.anim-ascend-heaven { animation: ascendToHeaven 1.5s forwards ease-in; }
+
+.shard-spawn-hell { animation: spawnShardHell 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.shard-spawn-heaven { animation: spawnShardHeaven 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+.currency-anim-container {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+
+/* Precise Shard Variants */
+.shard-hell {
+  background: #1a0505; /* Blackish red base */
+  box-shadow: 
+    inset 4px 0 10px rgba(0, 0, 0, 0.9), 
+    inset -4px 0 10px rgba(200, 20, 20, 0.9),
+    0 0 15px rgba(255, 50, 50, 0.6);
+}
+.shard-hell::after {
+  background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(100,0,0,0.2) 50%, rgba(255,0,0,0.6) 100%);
+}
+
+.shard-heaven {
+  background: #f0faff; /* Cyan tint base */
+  box-shadow: 
+    inset 4px 0 10px rgba(255, 215, 0, 0.8), 
+    inset -4px 0 10px rgba(0, 255, 255, 0.8),
+    0 0 15px rgba(0, 255, 255, 0.6);
+}
+.shard-heaven::after {
+  background: linear-gradient(135deg, rgba(255,215,0,0.5) 0%, rgba(255,255,255,0.2) 50%, rgba(0,255,255,0.6) 100%);
+}
+
+
+
+
+
+
+/* --- PAYMENT REPLICA (Based on Auth) --- */
+#paymentModalWrapper {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+#paymentModalWrapper.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.payment-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.5), 0 10px 10px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  max-width: 95%;
+  min-height: 600px; /* Taller for payment forms */
+  display: flex; /* Fix for centering content */
+}
+
+/* -- KALI PANEL (Left/Default) -- */
+.payment-mode-kali {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+  left: 0;
+  width: 50%;
+  z-index: 2;
+  background: linear-gradient(135deg, #1f0505 0%, #450a0a 100%); /* Deep Dark Red No Pink */
+}
+/* -- KALKI PANEL (Right/Active) -- */
+.payment-mode-kalki {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+  background: linear-gradient(135deg, #f0f9ff 0%, #7dd3fc 100%); /* Stronger Sky Gradient */
+}
+
+/* -- ACTIVE STATE -- */
+.payment-container.right-panel-active .payment-mode-kali {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.payment-container.right-panel-active .payment-mode-kalki {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: showAuth 0.6s;
+}
+
+/* -- FORM INTERNALS -- */
+.payment-form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 40px;
+  text-align: center;
+}
+
+/* Kali Specifics - Dark Theme Override */
+.payment-mode-kali h2 { color: #fecaca !important; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.payment-mode-kali p { color: #f87171 !important; margin: 10px 0 20px; font-style: italic; }
+.stone-input {
+  background: rgba(43, 11, 11, 0.8) !important;
+  border: 1px solid #7f1d1d !important;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  color: #fca5a5 !important;
+  font-family: var(--font-heading);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+}
+.stone-input::placeholder { color: #fca5a5 !important; opacity: 0.5; }
+.stone-input:focus { outline: 2px solid #ef4444; border-color: transparent; background: rgba(0,0,0,0.6) !important; }
+
+.payment-mode-kali .pay-submit-btn {
+  border-radius: 12px; /* Card style radius */
+  border: 1px solid #ef4444;
+  background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+  color: #fca5a5;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 150ms ease-in;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+.payment-mode-kali .pay-submit-btn:hover { background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%); transform: translateY(-2px); color: #fff; border-color: #fff; }
+
+/* Kalki Specifics - Bright Theme */
+.payment-mode-kalki h2 { color: #0369a1; text-transform: uppercase; letter-spacing: 2px; text-shadow: none; }
+.payment-mode-kalki p { color: #0c4a6e; margin: 10px 0 20px; font-style: italic; }
+.divine-input {
+  background: #fff;
+  border: 1px solid #7dd3fc;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  color: #0c4a6e;
+  font-family: var(--font-heading);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+.divine-input:focus { outline: 2px solid #0ea5e9; border-color: transparent; }
+
+.payment-mode-kalki .pay-submit-btn {
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 150ms ease-in;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+}
+.payment-mode-kalki .pay-submit-btn:hover { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); transform: translateY(-2px); }
+
+
+/* -- OVERLAY (The Switcher - Keep distinct but compatible) -- */
+.payment-overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+.payment-container.right-panel-active .payment-overlay-container {
+  transform: translateX(-100%);
+}
+
+.payment-overlay {
+  background: #ff416c;
+  background: -webkit-linear-gradient(to right, #ffe4e6, #e0f2fe);
+  background: linear-gradient(to right, #ffe4e6, #e0f2fe); /* Light Split */
+  background-repeat: no-repeat;
+  
+  background-position: 0 0;
+  color: #333;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+.payment-container.right-panel-active .payment-overlay {
+  transform: translateX(50%);
+}
+
+.payment-overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Overlay Left (Visible next to Kalki Form on Right) -> Should prompt for Kali */
+.payment-overlay-left {
+  transform: translateX(-20%);
+  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); /* Blue Panel */
+  border-right: none;
+}
+.payment-container.right-panel-active .payment-overlay-left {
+  transform: translateX(0);
+}
+.payment-overlay-left h2 { color: #fff !important; }
+.payment-overlay-left p { color: #e0f2fe !important; }
+
+/* Overlay Right (Visible next to Kali Form on Left) -> Should prompt for Kalki */
+.payment-overlay-right {
+  right: 0;
+  transform: translateX(0);
+  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); /* Red Panel */
+  border-left: none;
+}
+.payment-container.right-panel-active .payment-overlay-right {
+  transform: translateX(20%);
+}
+.payment-overlay-right h2 { color: #fff !important; }
+.payment-overlay-right p { color: #fee2e2 !important; }
+
+.payment-ghost-btn {
+  background-color: transparent;
+  border-color: #ffffff;
+  border-radius: 20px;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.payment-ghost-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.05);
+}
+
+/* Close Button (Absolute Top Right) */
+.close-payment-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  color: #94a3b8; /* Darker close button for light bg */
+  cursor: pointer;
+  z-index: 200;
+  opacity: 0.7;
+}
+.close-payment-modal:hover { opacity: 1; color: #64748b; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payment-container { min-height: 800px; }
+  .payment-mode-kali, .payment-mode-kalki { width: 100%; }
+  .payment-overlay-container { display: none; }
+  .payment-container.right-panel-active .payment-mode-kalki { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .payment-container .payment-mode-kalki { opacity: 0; pointer-events: none; }
+  .payment-container.right-panel-active .payment-mode-kali { opacity: 0; pointer-events: none; }
+}
+
+/* Loaders for Bright Theme */
+.transaction-loader.red-loader { border-top-color: #dc2626; border-right-color: #fee2e2; border-bottom-color: #fee2e2; border-left-color: #fee2e2; }
+.transaction-loader.blue-loader { border-top-color: #0284c7; border-right-color: #e0f2fe; border-bottom-color: #e0f2fe; border-left-color: #e0f2fe; }
+
+/* --- TRANSACTION SIMULATION STYLES --- */
+
+
+/* --- PAYMENT FORMS FIXES --- */
+.payment-form-content form {
+  width: 100%;
+}
+.payment-form-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0 40px !important;
+  height: 100% !important;
+}
+
+/* Specific button styles override */
+.payment-ghost-btn {
+  border: 1px solid #fff;
+  background-color: transparent;
+  width: auto;
+  min-width: 160px;
+}
+.payment-overlay-left {
+  border: none !important;
+  background: linear-gradient(135deg, #000000 0%, #0f172a 100%) !important;
+}
+.payment-overlay-right {
+  border: none !important;
+  background: linear-gradient(135deg, #1a0505 0%, #2a0a0a 100%) !important;
+}
+
+/* Ghost button hover states */
+.payment-overlay-left .payment-ghost-btn:hover {
+  background: rgba(0,255,255,0.2);
+  border-color: #00ffff;
+  color: #00ffff;
+}
+.payment-overlay-right .payment-ghost-btn:hover {
+  background: rgba(255,0,0,0.2);
+  border-color: #ff3333;
+  color: #ff3333;
+}
+
+
+/* --- CENTER ALIGNMENT FORCE FIX --- */
+#paymentModalWrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 99999 !important;
+}
+
+/* --- TRANSACTION SIMULATION STYLES --- */
+.transaction-step {
+  margin: 20px 0;
+  font-family: var(--font-body);
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+.transaction-loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 1s ease-in-out infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Kali Specific Loader */
+.payment-mode-kali .transaction-loader { border-top-color: #ff3333; }
+.payment-mode-kali .transaction-step { color: #ffcccc; text-shadow: 0 0 5px #ff0000; }
+
+/* Kalki Specific Loader */
+.payment-mode-kalki .transaction-loader { border-top-color: #00ffff; }
+.payment-mode-kalki .transaction-step { color: #e0faff; text-shadow: 0 0 5px #00ffff; }
+
+
+/* --- RECTANGULAR CARD SELECTOR FIXES (Tailwind Shim) --- */
+
+/* Force Grid Layout for Amount Selector */
+.amount-selector {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin-bottom: 24px !important;
+}
+
+/* Base Card Style */
+.amount-selector > div {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px !important;
+  height: 110px !important;
+  border-radius: 12px !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  transition: all 0.3s ease !important;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer !important;
+  overflow: hidden !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.amount-selector > div:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* === KALI MODE (Dark Asuric) === */
+.payment-mode-kali .amount-selector > div {
+  border-color: #5c1515; /* Deep dark red border */
+  background: rgba(0, 0, 0, 0.6); /* Dark background */
+  transition: all 0.3s ease;
+}
+.payment-mode-kali .amount-selector > div:hover {
+  border-color: #ef4444; /* Bright red hover border */
+  background: rgba(69, 10, 10, 0.8); /* Dark red tint on hover */
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+}
+
+/* Selected State */
+.payment-mode-kali .amount-selector > div[class*="border-red-600"] {
+  border-color: #dc2626 !important; /* Red-600 */
+  background: rgba(69, 10, 10, 0.9) !important;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.6) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Inner Text Colors */
+.payment-mode-kali .amount-selector > div > div:first-child { /* Number */
+  font-family: var(--font-heading);
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  color: #fecaca; /* Light red text */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  margin-bottom: 4px;
+}
+.payment-mode-kali .amount-selector > div > div:nth-child(2) { /* Shards Label */
+  font-size: 0.65rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #f87171; /* Red-400 */
+  margin-bottom: 8px;
+}
+.payment-mode-kali .amount-selector > div > div:nth-child(3) { /* Cost Badge */
+  font-size: 0.875rem !important;
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background-color: #450a0a; /* Very dark red bg */
+  color: #fca5a5; /* Light red text */
+  border: 1px solid #7f1d1d;
+}
+
+/* === KALKI MODE (Cyan) === */
+.payment-mode-kalki .amount-selector > div {
+  border-color: #7dd3fc; /* sky-300 */
+  background: rgba(186, 230, 253, 0.3); /* sky-200 tint */
+}
+.payment-mode-kalki .amount-selector > div:hover {
+  border-color: #0ea5e9; /* sky-500 */
+  background: rgba(186, 230, 253, 0.5);
+}
+
+/* Selected State */
+.payment-mode-kalki .amount-selector > div[class*="border-cyan-600"] {
+  border-color: #0369a1 !important; /* darker border (sky-700) */
+  background: rgba(186, 230, 253, 0.6) !important; /* darker selected bg */
+  box-shadow: 0 10px 15px -3px rgba(3, 105, 161, 0.2) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Inner Text Colors */
+.payment-mode-kalki .amount-selector > div > div:first-child { 
+  font-family: var(--font-heading);
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  color: #0c4a6e; /* darker text (sky-900) */
+  margin-bottom: 4px;
+}
+.payment-mode-kalki .amount-selector > div > div:nth-child(2) { 
+  font-size: 0.65rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #075985; /* darker text (sky-800) */
+  margin-bottom: 8px;
+}
+.payment-mode-kalki .amount-selector > div > div:nth-child(3) { 
+  font-size: 0.875rem !important;
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background-color: #7dd3fc; /* darker badge bg */
+  color: #0c4a6e; /* darker badge text */
+}
+
+/* Triangle Indicator Fix */
+.amount-selector > div > div.absolute {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-top: 24px solid transparent !important;
+  border-right: 24px solid;
+  border-left: none !important;
+  border-bottom: none !important;
+  display: block !important;
+}
+.payment-mode-kali .amount-selector > div > div.absolute {
+  border-right-color: #dc2626 !important;
+}
+.payment-mode-kalki .amount-selector > div > div.absolute {
+  border-right-color: #0891b2 !important;
+}
+
+/* Input Fields Spacing Fix */
+.stone-input, .divine-input {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  margin-bottom: 12px !important;
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05) !important;
+  display: block;
+}
+.stone-input::placeholder, .divine-input::placeholder {
+  opacity: 0.6;
+}
+
+/* Button Fix */
+.pay-submit-btn {
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: 24px auto 0 !important;
+  display: block !important;
+  padding: 14px 20px !important;
+  font-size: 1.1em !important;
+  letter-spacing: 2px !important;
+}
+
+
+/* THE MANIFESTATION SUB-ARRAY GRID */
+.avatar-section-title {
+  font-family: var(--font-heading);
+  color: var(--gold-light);
+  font-size: 1.3em;
+  margin: 30px 0 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 8px;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* Main Card Container needs relative positioning */
+.main-card {
+  position: relative;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1); /* Subtle border */
+}
+
+/* The container that holds the avatars, positioned ABOVE the main card */
+.avatar-hover-overlay {
+  position: absolute;
+  bottom: 110%; /* Positions it slightly above the top of the main card */
+  left: 50%;
+  transform: translateX(-50%); /* Centered horizontally */
+  width: 120%; /* Slightly wider than the card for effect */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  pointer-events: none; /* Mouse operations pass through initially */
+  opacity: 0; /* Hidden by default */
+  z-index: 10;
+}
+
+/* While visible, allow mouse interaction on avatars */
+.avatar-hover-overlay.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* Styling the Mini Avatar Cards (AAA Game Style) */
+.avatar-mini-card {
+  width: 80px;
+  height: 100px;
+  background: rgba(10, 15, 25, 0.9); /* Deep dark frosted glass */
+  border-radius: 8px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 8px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* Initial state for GSAP animation */
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-mini-card img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 5px;
+  border: 2px solid transparent; /* Placeholder for dynamic border */
+}
+
+.avatar-mini-card h4 {
+  font-size: 0.75em;
+  color: #fff;
+  margin: 0;
+  font-family: var(--font-heading); /* Or any premium font */
+}
+
+.avatar-mini-card p {
+  font-size: 0.75em;
+  color: #aaa;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Dynamic Borders based on Avatar Type */
+.avatar-mini-card.peaceful img {
+  border-color: #0ea5e9; /* Cyan for peaceful */
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+}
+
+.avatar-mini-card.fierce img {
+  border-color: #ef4444; /* Blood Red for fierce */
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.side-panel-details .avatar-mini-card {
+  opacity: 1;
+  transform: none;
+  width: auto;
+  height: auto;
+}
+
+
+/* KALI PURUSH THEME - VIDEO BACKGROUND */
+.kali-theme-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #050505; 
+  overflow: hidden;
+  z-index: 0;
+}
+
+.kali-embers-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: screen; 
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Brahmamuhurtha Twilight Background */
+.brahmamuhurtha-bg {
+  background: radial-gradient(circle at 50% 100%, #1a0b2e 0%, #0d061a 50%, #04010a 100%);
+  
+  background-attachment: fixed;
+}
+
+/* --- Sidebar Push Logic --- */
+.content-layer {
+  transition: padding-right 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-right: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 601px) {
+  .content-layer.sidebar-open {
+    padding-right: 450px;
+  }
+}
+
+
+/* --- PREMIUM KALKI WARRIOR ASSETS (MATCHING IMAGE) --- */
+
+body.kalki-mode .custom-kalki-box {
+  background: linear-gradient(135deg, rgba(20, 25, 35, 0.95), rgba(5, 7, 10, 0.98)) !important;
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(255, 215, 0, 0.1) inset;
+}
+
+/* Inner gold border with corners */
+body.kalki-mode .custom-kalki-box::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+  z-index: 1;
+}
+/* Corner dots for the inner border */
+body.kalki-mode .custom-kalki-box::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; width: 4px; height: 4px; background: #d4af37;
+  box-shadow: calc(100% - 8px) 0 0 #d4af37, 0 calc(100% - 8px) 0 #d4af37, calc(100% - 8px) calc(100% - 8px) 0 #d4af37;
+  pointer-events: none;
+}
+
+/* Titles inside Kalki Boxes */
+body.kalki-mode .custom-kalki-box h3 {
+  font-family: var(--font-heading);
+  color: #ebd197 !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 3px;
+  font-size: 1.6em;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+body.kalki-mode .custom-kalki-box p, 
+body.kalki-mode .custom-kalki-box label,
+body.kalki-mode .custom-kalki-box div {
+  z-index: 2;
+  position: relative;
+}
+
+/* Premium Kalki Buttons */
+body.kalki-mode .custom-kalki-box button,
+body.kalki-mode .custom-kalki-box .glowing-btn,
+body.kalki-mode #quizBtn {
+  background: linear-gradient(180deg, #442800 0%, #1a0f00 100%) !important;
+  border: 1px solid #d4af37 !important;
+  color: #ebd197 !important;
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 4px;
+  padding: 12px 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+body.kalki-mode .custom-kalki-box button:hover,
+body.kalki-mode .custom-kalki-box .glowing-btn:hover,
+body.kalki-mode #quizBtn:hover {
+  background: linear-gradient(180deg, #5c3500 0%, #2b1800 100%) !important;
+  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   2. SHINY MARBLE CARDS (KALKI MODE)
+========================================= */
+body.kalki-mode .marble-card, body.kalki-mode .custom-kalki-box {
+  position: relative;
+  background-color: rgba(2, 6, 23, 0.5); /* Deep cosmos matching background */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(14, 165, 233, 0.4); /* Cyan / Electric border */
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(14, 165, 233, 0.15), 0 0 15px rgba(212, 175, 55, 0.1);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 32px auto;
+  z-index: 2;
+}
+  /* THE MAGIC: The diagonal glass reflection */
+  body.kalki-mode .card-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Creates a sharp diagonal cutoff from white-ish to transparent */
+    background: linear-gradient(
+      115deg,
+      rgba(14, 165, 233, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 49%,
+      rgba(255, 255, 255, 0) 50%
+    );
+    pointer-events: none; /* Allows clicking buttons through the glare */
+  z-index: 1;
+}
+
+/* =========================================
+   3. GOLD INSET BORDERS & TEXT
+========================================= */
+body.kalki-mode .gold-border-box {
+  position: relative;
+  border: 1px solid rgba(212, 175, 55, 0.4); /* Faint gold */
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2; /* Keeps text above the glare */
+  background: rgba(2, 6, 23, 0.4);
+}
+
+/* Corner Dots for the border box */
+body.kalki-mode .gold-border-box::before,
+body.kalki-mode .gold-border-box::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  border: 1px solid #0ea5e9; /* Cyan meteor accents */
+  background: transparent;
+}
+body.kalki-mode .gold-border-box::before { top: -3px; left: -3px; box-shadow: calc(100% + 4px) 0 #0ea5e9; }
+body.kalki-mode .gold-border-box::after { bottom: -3px; left: -3px; box-shadow: calc(100% + 4px) 0 #0ea5e9; }
+
+
+body.kalki-mode .card-title {
+  color: #fff !important; /* Pure celestial white */
+  font-size: 26px;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
+  font-family: var(--font-heading);
+}
+
+body.kalki-mode .card-subtitle {
+  color: #e0f2fe; /* Light cyan */
+  font-size: 15px;
+  font-family: sans-serif;
+  margin-top: -10px;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+/* =========================================
+   4. BRONZE / GOLD BUTTONS
+========================================= */
+body.kalki-mode .gold-premium-btn {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%) !important;
+  border: 1px solid #0ea5e9 !important;
+  color: #fff !important;
+  text-shadow: 0 0 5px rgba(14, 165, 233, 0.8);
+  padding: 12px 30px;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  position: relative;
+  z-index: 2;
+}
+
+body.kalki-mode .gold-premium-btn:hover {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.4) 0%, rgba(212, 175, 55, 0.4) 100%) !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 5px 20px rgba(14, 165, 233, 0.5), 0 0 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+
+
+/* ================= THEME FONTS ================= */
+body.light-theme {
+  --font-heading: 'Philosopher', sans-serif;
+  --font-body: 'Cormorant Garamond', serif;
+}
+
+body.kalki-mode {
+  --font-heading: 'Cinzel Decorative', serif;
+  --font-body: 'Quattrocento', serif;
+}
+
+body.kalki-mode h1,
+body.kalki-mode h2,
+body.kalki-mode .entity-title,
+body.kalki-mode .theme-toggle {
+  text-transform: uppercase;
+  color: #e2e8f0;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-shadow: 
+    0 1px 0 #94a3b8,
+    0 2px 0 #64748b,
+    0 3px 0 #475569,
+    0 4px 0 #334155,
+    0 5px 0 #1e293b,
+    0 6px 1px rgba(0,0,0,0.6),
+    0 0 10px rgba(125, 211, 252, 0.4),
+    0 1px 3px rgba(0,0,0,0.5),
+    0 3px 5px rgba(0,0,0,0.4),
+    0 5px 10px rgba(0,0,0,0.5),
+    0 10px 10px rgba(0,0,0,0.4),
+    0 20px 20px rgba(0,0,0,0.3);
+}
+
+body.kali-mode {
+  --font-heading: 'Rubik Distressed', display;
+  --font-body: 'VT323', monospace;
+  font-size: 1.15rem; /* Increase global pixelated text size for readability */
+}
+
+body.kali-mode h1 { font-size: 4rem; letter-spacing: 4px; }
+body.kali-mode h2 { font-size: 2.5rem; letter-spacing: 3px; }
+body.kali-mode .entity-title { font-size: 2.2rem; letter-spacing: 2px; }
+body.kali-mode .theme-toggle { font-size: 1.2rem; letter-spacing: 2px; }
+body.kali-mode .entity-title,
+body.kali-mode .theme-toggle {
+  text-transform: uppercase;
+  color: #a3a3a3; /* Stone grey color */
+  text-shadow: 
+    -1px -1px 0 #555,
+    1px -1px 0 #333,
+    -1px 1px 0 #444,
+    1px 1px 0 #222,
+    0px 3px 0 #1a1a1a, /* Depth */
+    0px 4px 6px rgba(0, 0, 0, 0.8), /* Drop shadow */
+    0px 0px 8px rgba(255, 0, 0, 0.4); /* Slight demonic red glow */
+}

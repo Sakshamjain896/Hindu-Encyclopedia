@@ -1,0 +1,191 @@
+/* DivineCard.css - Premium God Theme Styles */
+.divine-card-wrapper {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow: visible; /* Need overflow for halo */
+  cursor: pointer;
+  transition: border-color 0.4s;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.divine-card-wrapper:hover {
+  border-color: rgba(255, 215, 0, 0.6); /* Golden glow */
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.divine-card-wrapper.selected {
+  border-color: #fbbf24;
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
+}
+
+/* Glowing Halo behind the card */
+.divine-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 60%);
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(20px);
+  mix-blend-mode: screen;
+}
+
+.divine-card-content {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.divine-card-content .image-container {
+  height: 60%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.divine-card-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1), filter 0.5s;
+}
+
+.divine-card-wrapper:hover .divine-card-content img {
+  transform: scale(1.08);
+  filter: contrast(1.1) brightness(1.1);
+}
+
+.image-glow-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(10, 10, 30, 0.95), transparent 70%);
+  pointer-events: none;
+}
+
+.divine-checkbox {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 50;
+  width: 24px;
+  height: 24px;
+  accent-color: #fbbf24;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+.divine-info {
+  padding: 15px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to bottom, rgba(10,10,30,0.8), rgba(0,0,10,1));
+  text-align: left;
+}
+
+.divine-info h3 {
+  margin: 0;
+  font-family: var(--font-cinzel);
+  font-size: 1.6rem;
+  color: #fbbf24;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(251, 191, 36, 0.4);
+  letter-spacing: 1px;
+}
+
+.divine-info h4 {
+  margin: 5px 0 10px;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.divine-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Flying Avatar Shards for Gods Theme */
+.divine-shards-container {
+  position: absolute;
+  top: -40px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.divine-shard {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid rgba(251, 191, 36, 0.6);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8), 0 0 15px rgba(251, 191, 36, 0.4);
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  opacity: 0;
+  transform: translateY(20px) rotateX(45deg);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.divine-shard:hover {
+  transform: translateY(-5px) scale(1.15) !important;
+  border-color: #fff;
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 215, 0, 0.8);
+  z-index: 30;
+}
+
+.divine-shard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shard-info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 4px;
+  text-align: center;
+  font-size: 0.6rem;
+  font-family: var(--font-cinzel);
+  opacity: 0;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(2px);
+}
+
+.divine-shard:hover .shard-info {
+  opacity: 1;
+}

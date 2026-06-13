@@ -1,0 +1,304 @@
+/* -------------------------------------
+   DIMENSIONAL CARD STYLES
+   Solid Card with Magma/Void Backgrounds
+---------------------------------------- */
+
+/* The outer bounding box */
+.dimensional-wrapper {
+  position: relative;
+  width: 280px; 
+  height: 400px;
+  margin: 0 auto;
+  perspective: 1500px; /* Essential for 3D shard ejections */
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.dimensional-wrapper:hover {
+  z-index: 50; /* Bring hovered card above others */
+}
+
+/* Base selection border logic mirroring index.css */
+.dimensional-wrapper.active {
+  transform: scale(1.05);
+}
+.dimensional-wrapper.active::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 4px solid var(--gold);
+  border-radius: 16px;
+  border-image: linear-gradient(to right, #fbbf24, #f59e0b) 1;
+}
+
+/* =========================================
+   THE COSMIC VOID (Background)
+   ========================================= */
+.cosmic-void-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, #050510 0%, #000 70%);
+  box-shadow: inset 0 0 50px rgba(0,0,0,1), 0 0 30px rgba(20, 0, 40, 0.8);
+  z-index: 5; /* Behind the solid card */
+  pointer-events: none;
+  overflow: visible; /* Let shards fly out */
+}
+
+.void-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(100, 0, 255, 0.4) 0%, transparent 60%);
+  border-radius: 50%;
+}
+
+/* Shards and nodes logic */
+.shards-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+.rift-shard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  margin-left: -45px; 
+  margin-top: -55px;  
+  width: 90px;
+  height: 110px;
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  -webkit-backdrop-filter: blur(8px); 
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  z-index: 20;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  pointer-events: auto; /* Allow interaction when revealed */
+}
+
+.rift-shard:hover {
+  transform: scale(1.1) translateY(-5px) !important;
+  z-index: 30;
+}
+
+.rift-shard img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 5px;
+  border: 2px solid transparent;
+}
+
+.rift-shard h4 {
+  font-size: 0.8em;
+  color: #fff;
+  margin: 0 0 2px 0;
+  font-family: 'Cinzel', serif;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.node-class {
+  font-size: 0.55em;
+  letter-spacing: 1px;
+  margin: 0;
+  color: #aaa;
+}
+
+.rift-shard.peaceful img {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.6);
+}
+.rift-shard.peaceful h4 { color: #e0f2fe; }
+
+.rift-shard.fierce img {
+  border-color: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+}
+.rift-shard.fierce h4 { color: #fecaca; }
+
+/* SVG Data Lines */
+.rift-svg-lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+
+/* =========================================
+   THE MAIN SOLID CARD
+   ========================================= */
+
+.solid-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--card-bg, rgba(45, 15, 15, 0.9)); 
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 20; 
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image */
+.main-img {
+  width: 100%;
+  height: 240px; 
+  object-fit: cover;
+  object-position: center 15%; 
+  transform: scale(1.05); 
+  transition: filter 0.3s ease, border-color 0.3s ease;
+  border-bottom: none; 
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+}
+
+.base-info {
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: -30px; 
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.magma-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+  /* Soft fade at the top so it blends smoothly under the bottom of the image */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 25%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 25%);
+}
+
+.magma-dark-fade {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(10, 5, 5, 0.7); /* Deep dark overlay so white text shines clearly */
+  z-index: 0; /* Just above Magma, behind text */
+  pointer-events: none;
+}
+
+.base-info .name {
+  font-family: 'Cinzel', serif;
+  margin: 0 0 5px 0;
+  font-size: 1.4em;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 2px;
+}
+
+.base-info .title {
+  font-size: 0.75em;
+  color: #ef4444;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.base-info .desc {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* KALI & KALKI MODE OVERRIDES */
+body.kali-mode .main-img {
+  filter: grayscale(90%) sepia(20%) contrast(1.2);
+  border-bottom: none;
+}
+body.kali-mode .solid-card {
+  border-radius: 0;
+  border: none;
+}
+body.kali-mode .dimensional-wrapper {
+  border-radius: 0;
+  box-shadow: 6px 6px 0px #000;
+  outline: 4px solid #333;
+}
+body.kali-mode .dimensional-wrapper:hover {
+  outline-color: var(--border-glow);
+  box-shadow: 8px 8px 0px #000;
+}
+body.kali-mode .dimensional-wrapper .name {
+  color: var(--text-main);
+  text-shadow: none;
+}
+body.kali-mode .dimensional-wrapper:hover .main-img {
+  filter: grayscale(0%) contrast(1.1);
+}
+
+body.kalki-mode .main-img {
+  filter: brightness(1.1) contrast(1.2) saturate(1.1);
+}
+body.kalki-mode .solid-card {
+  border-radius: 4px;
+  border: none;
+}
+body.kalki-mode .dimensional-wrapper {
+  outline: 1px solid rgba(14, 165, 233, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5), 0 0 15px rgba(14, 165, 233, 0.1);
+}
+body.kalki-mode .dimensional-wrapper:hover {
+  outline-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(14, 165, 233, 0.5);  
+}
+body.kalki-mode .dimensional-wrapper .name {
+  color: var(--gold-light);
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.8), 0 2px 4px rgba(0,0,0,1);     
+}
+body.kalki-mode .dimensional-wrapper .title {
+  color: #38bdf8;
+  text-shadow: 0 0 5px rgba(14, 165, 233, 0.6);
+}
+body.kalki-mode .dimensional-wrapper:hover .main-img {
+  filter: brightness(1.2) contrast(1.3) saturate(1.4);
+}

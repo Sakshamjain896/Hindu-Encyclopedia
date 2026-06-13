@@ -1,0 +1,11 @@
+{
+    "chat.checkpoints.showFileChanges": true,
+    "chat.requestQueuing.defaultAction": "queue",
+    "chat.mcp.discovery.enabled": {
+        "claude-desktop": true,
+        "cursor-global": true,
+        "cursor-workspace": true,
+        "windsurf": true
+    },
+    "chat.agent.sandbox": true
+}
