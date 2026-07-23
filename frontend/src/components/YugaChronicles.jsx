@@ -139,28 +139,47 @@ export default function YugaChronicles({ onClose }) {
 
   // Voiceover Trigger Handler
   // Voiceover Trigger Handler with Audio-Bound Boundary Sync
+  // Divine Goddess Voiceover Handler
   const speakNarration = useCallback((text) => {
     if (!synthRef.current || isMuted) return;
 
     synthRef.current.cancel();
-    // Set to -1 initially so 1st word doesn't light up until audio output begins
-    setCurrentCharIndex(-1);
+    setCurrentCharIndex(-1); // Keeps caption sync aligned with initial sound start
 
     if (!text) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.88;  // Dramatic pacing
-    utterance.pitch = 0.95;
+    
+    // Goddess Acoustic Attributes
+    utterance.rate = 0.82;   // Slow, majestic, and serene pace
+    utterance.pitch = 1.05;  // Luminous, elevated celestial tone
+    utterance.volume = 1.0;  // Maximum clarity
     utterance.lang = 'en-US';
 
     const voices = synthRef.current.getVoices();
-    const preferredVoice = voices.find(
-      (v) => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha'))
-    ) || voices[0];
 
-    if (preferredVoice) utterance.voice = preferredVoice;
+    // Prioritize premium, natural female voice models across platforms
+    const goddessVoice = voices.find((v) => {
+      const name = v.name.toLowerCase();
+      const isEnglish = v.lang.startsWith('en');
+      
+      return isEnglish && (
+        name.includes('aria') ||        // Edge / Windows Natural Female
+        name.includes('jenny') ||       // Edge Natural Female
+        name.includes('serena') ||      // macOS High Quality Female
+        name.includes('samantha') ||    // macOS / iOS
+        name.includes('victoria') ||    // macOS Classic
+        name.includes('google uk english female') || 
+        name.includes('google us english') ||
+        (name.includes('natural') && name.includes('female'))
+      );
+    }) || voices.find(v => v.lang.startsWith('en')) || voices[0];
 
-    // Boundary listener triggers exact word index in real-time as audio plays
+    if (goddessVoice) {
+      utterance.voice = goddessVoice;
+    }
+
+    // Real-time boundary listener for dynamic caption highlighting
     utterance.onboundary = (event) => {
       if (event.name === 'word') {
         setCurrentCharIndex(event.charIndex);
@@ -170,7 +189,7 @@ export default function YugaChronicles({ onClose }) {
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => {
       setIsSpeaking(false);
-      setCurrentCharIndex(text.length); // All completed
+      setCurrentCharIndex(text.length);
     };
     utterance.onerror = () => {
       setIsSpeaking(false);
