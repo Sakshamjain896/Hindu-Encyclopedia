@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState, useCallback, useEffect } from 'react';
+﻿import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Particles from "react-tsparticles";
@@ -17,15 +17,176 @@ const narrativeData = [
   { id: 'kalki', era: 'Kali Yuga', focus: 'Creation', title: 'The Kalki Prophecy', subtitle: 'The Final Purificator', desc: 'Prophesied to appear at the absolute twilight of the darkest age. Riding a white steed and wielding a blazing, comet-like sword, Kalki will descend to cleanse the earth of ultimate adharma and inaugurate a pristine new Satya Yuga.', img: 'https://miro.medium.com/1*R2HOHT0Uj7ccvvSx-DoEmA.png' }
 ];
 
+// --- Subtitle Captions Overlay Component with Dynamic Audio Speed Sync ---
+const CinematicCaptions = ({ text, currentCharIndex, isSpeaking, rate = 0.88 }) => {
+  // Regex parsing guarantees exact character offsets without string collision
+  const wordsWithOffsets = useMemo(() => {
+    if (!text) return [];
+    const regex = /\S+/g;
+    const result = [];
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      result.push({
+        word: match[0],
+        start: match.index,
+        end: match.index + match[0].length
+      });
+    }
+    return result;
+  }, [text]);
+
+  if (!isSpeaking && currentCharIndex < 0) return null;
+
+  // Calculate dynamic transition speed based on background speech rate
+  const transitionSpeed = `${(0.2 / rate).toFixed(2)}s`;
+
+  return (
+    <div 
+      className="cinematic-captions-hud"
+      style={{
+        width: '100%',
+        maxWidth: '900px',
+        margin: '1.25rem auto 0 auto',
+        padding: '0.85rem 1.75rem',
+        background: 'rgba(12, 12, 20, 0.8)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: '16px',
+        border: '1px solid rgba(255, 215, 0, 0.3)',
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(255, 215, 0, 0.08)',
+        textAlign: 'center',
+        zIndex: 15,
+        transition: 'opacity 0.4s ease'
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+        <span 
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: '#FFD700',
+            boxShadow: '0 0 8px #FFD700',
+            display: 'inline-block',
+            animation: 'pulse 1.5s infinite'
+          }}
+        />
+        <span style={{ fontSize: '0.7rem', letterSpacing: '2px', color: '#FFD700', textTransform: 'uppercase', fontWeight: 600 }}>
+          Cosmic Narration
+        </span>
+      </div>
+
+      <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.6', letterSpacing: '0.2px' }}>
+        {wordsWithOffsets.map(({ word, start, end }, index) => {
+          // -1 means speech hasn't commenced sound output yet
+          const isPast = currentCharIndex >= end;
+          const isCurrent = currentCharIndex >= 0 && currentCharIndex >= start && currentCharIndex < end;
+
+          return (
+            <span
+              key={index}
+              style={{
+                display: 'inline-block',
+                marginRight: '0.32rem',
+                // Smooth speed-calibrated transitions matching background audio pacing
+                transition: `color ${transitionSpeed} cubic-bezier(0.4, 0, 0.2, 1), text-shadow ${transitionSpeed} cubic-bezier(0.4, 0, 0.2, 1), transform ${transitionSpeed} cubic-bezier(0.4, 0, 0.2, 1)`,
+                color: isCurrent
+                  ? '#FFD700'
+                  : isPast
+                  ? '#E5C158'
+                  : 'rgba(255, 255, 255, 0.35)',
+                fontWeight: isCurrent ? '700' : '400',
+                textShadow: isCurrent
+                  ? '0 0 12px rgba(255, 215, 0, 0.95), 0 0 22px rgba(255, 215, 0, 0.6)'
+                  : 'none',
+                transform: isCurrent ? 'scale(1.08)' : 'scale(1)',
+              }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </p>
+    </div>
+  );
+};
+
 export default function YugaChronicles({ onClose }) {
   const containerRef = useRef(null);
   const cinematicTl = useRef(null);
+  const synthRef = useRef(null);
   
   const [selectedEra, setSelectedEra] = useState('All');
   const [selectedFocus, setSelectedFocus] = useState('All');
   const [filteredData, setFilteredData] = useState(narrativeData);
   const [activeEvent, setActiveEvent] = useState(narrativeData[0]);
   const [isCinematicMode, setIsCinematicMode] = useState(false);
+
+  // Speech Synthesis States
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Initialize Speech Synthesis & Load Voices
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      synthRef.current = window.speechSynthesis;
+    }
+    return () => {
+      if (synthRef.current) synthRef.current.cancel();
+    };
+  }, []);
+
+  // Voiceover Trigger Handler
+  // Voiceover Trigger Handler with Audio-Bound Boundary Sync
+  const speakNarration = useCallback((text) => {
+    if (!synthRef.current || isMuted) return;
+
+    synthRef.current.cancel();
+    // Set to -1 initially so 1st word doesn't light up until audio output begins
+    setCurrentCharIndex(-1);
+
+    if (!text) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.88;  // Dramatic pacing
+    utterance.pitch = 0.95;
+    utterance.lang = 'en-US';
+
+    const voices = synthRef.current.getVoices();
+    const preferredVoice = voices.find(
+      (v) => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha'))
+    ) || voices[0];
+
+    if (preferredVoice) utterance.voice = preferredVoice;
+
+    // Boundary listener triggers exact word index in real-time as audio plays
+    utterance.onboundary = (event) => {
+      if (event.name === 'word') {
+        setCurrentCharIndex(event.charIndex);
+      }
+    };
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setCurrentCharIndex(text.length); // All completed
+    };
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setCurrentCharIndex(-1);
+    };
+
+    synthRef.current.speak(utterance);
+  }, [isMuted]);
+
+  const stopSpeech = useCallback(() => {
+    if (synthRef.current) {
+      synthRef.current.cancel();
+      setIsSpeaking(false);
+      setCurrentCharIndex(0);
+    }
+  }, []);
 
   const particlesInit = useCallback(async engine => {
     await loadSlim(engine);
@@ -43,6 +204,13 @@ export default function YugaChronicles({ onClose }) {
     }
   }, [selectedEra, selectedFocus]);
 
+  // Handle active narration triggering during manual updates
+  useEffect(() => {
+    if (activeEvent && !isCinematicMode && !isMuted) {
+      speakNarration(activeEvent.desc);
+    }
+  }, [activeEvent, isCinematicMode, isMuted, speakNarration]);
+
   const handleEngageCinematic = () => {
     if(filteredData.length === 0) return;
     
@@ -50,19 +218,25 @@ export default function YugaChronicles({ onClose }) {
     
     if (cinematicTl.current) cinematicTl.current.kill();
     cinematicTl.current = gsap.timeline({ 
-      onComplete: () => setIsCinematicMode(false) 
+      onComplete: () => {
+        setIsCinematicMode(false);
+        stopSpeech();
+      }
     });
     
     filteredData.forEach((ev, i) => {
       // Fade out current stage
       if(i !== 0) {
-          cinematicTl.current.to('.cinematic-stage', { opacity: 0, duration: 0.8, ease: "power2.inOut" });
+        cinematicTl.current.to('.cinematic-stage', { opacity: 0, duration: 0.8, ease: "power2.inOut" });
       } else {
-          cinematicTl.current.set('.cinematic-stage', { opacity: 0 });
+        cinematicTl.current.set('.cinematic-stage', { opacity: 0 });
       }
       
-      // Swap content
-      cinematicTl.current.call(() => setActiveEvent(ev));
+      // Swap content & trigger speech
+      cinematicTl.current.call(() => {
+        setActiveEvent(ev);
+        speakNarration(ev.desc);
+      });
       
       // Cinematic Push In & Fade Up
       cinematicTl.current.fromTo('.cinematic-stage', 
@@ -70,8 +244,11 @@ export default function YugaChronicles({ onClose }) {
         { opacity: 1, scale: 1, duration: 1.8, ease: "power2.out", clearProps: "scale" }
       );
       
-      // Hold for reading
-      cinematicTl.current.to({}, { duration: 4.5 });
+      // Dynamic reading duration calculated from narrative word count
+      const spokenWordsCount = ev.desc.split(' ').length;
+      const calculatedDuration = Math.max(5.5, (spokenWordsCount / 2.1));
+      
+      cinematicTl.current.to({}, { duration: calculatedDuration });
     });
   };
 
@@ -85,6 +262,7 @@ export default function YugaChronicles({ onClose }) {
   };
 
   const handleClose = () => {
+     stopSpeech();
      if(cinematicTl.current) cinematicTl.current.kill();
      gsap.to(containerRef.current, {
          opacity: 0,
@@ -93,6 +271,16 @@ export default function YugaChronicles({ onClose }) {
          ease: 'power2.in',
          onComplete: onClose
      });
+  };
+
+  const toggleMute = () => {
+    if (isMuted) {
+      setIsMuted(false);
+      if (activeEvent) speakNarration(activeEvent.desc);
+    } else {
+      setIsMuted(true);
+      stopSpeech();
+    }
   };
 
   const particleOptions = {
@@ -159,6 +347,16 @@ export default function YugaChronicles({ onClose }) {
               <option value="Philosophy">Philosophy</option>
             </select>
           </div>
+
+          {/* Voice Narration Audio Mute Toggle */}
+          <button 
+            className="cinematic-select" 
+            onClick={toggleMute}
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', color: isMuted ? '#888' : '#FFD700' }}
+            title={isMuted ? "Unmute Voiceover" : "Mute Voiceover"}
+          >
+            {isMuted ? '🔇 Voice Off' : '🔊 Voice On'}
+          </button>
           
           <button 
             className={`engage-btn ${isCinematicMode ? 'active' : ''}`} 
@@ -196,6 +394,13 @@ export default function YugaChronicles({ onClose }) {
           <div className="no-events-msg">No ancient texts match these filters...</div>
         )}
       </div>
+
+      {/* Synchronized Real-time Subtitle Captions */}
+      <CinematicCaptions 
+        text={activeEvent?.desc}
+        currentCharIndex={currentCharIndex}
+        isSpeaking={isSpeaking}
+      />
 
       {/* Interactive Timeline Canvas */}
       <div className={`epic-timeline ${isCinematicMode ? 'disabled' : ''}`}>

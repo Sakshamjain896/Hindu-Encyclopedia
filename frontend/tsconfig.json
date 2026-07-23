@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["vite/client"],
@@ -11,6 +12,7 @@
     "strict": true,
     "jsx": "react-jsx",
     "sourceMap": true,
+    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
